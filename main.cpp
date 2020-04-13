@@ -9,13 +9,18 @@
  * Hunter Land
  */
 
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
-#include "state.hpp"
+#include "./state.hpp"
+#include "./stateGenerator.cpp"
+#include "./BFS.cpp"
 
 int main(int argc, char *argv[]) {
+	
 	if(argc != 5) {
 		std::cerr << "This program requires 4 arguments:" << std::endl;
 		std::cerr << "\t<Initial State File>" << std::endl;
@@ -30,7 +35,19 @@ int main(int argc, char *argv[]) {
 	std::string modeString(argv[3]);
 	std::string outputFile(argv[4]);
 
+
 	//Do code
+	state initState, goalState;
+	std::ifstream initFileStream(initStateFile);
+
+	std::vector<state> solution;
+	std::ofstream outFileStream(outputFile);
+	if(modeString == "BFS") {
+		solution = BFS(initState, goalState);
+	}
+	for (state s : solution) {
+		outFileStream << s << std::endl << std::endl;
+	}
 
 	return 0;
 }
