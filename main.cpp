@@ -37,14 +37,29 @@ int main(int argc, char *argv[]) {
 
 
 	//Do code
+	//Setup initState and goalState from given file arguments
 	state initState, goalState;
 	std::ifstream initFileStream(initStateFile);
+	initFileStream >> initState;
+	std::ifstream goalFileStream(goalStateFile);
+	goalFileStream >> goalState;
 
+	//Setup to solve the problem
 	std::vector<state> solution;
-	std::ofstream outFileStream(outputFile);
 	if(modeString == "BFS") {
 		solution = BFS(initState, goalState);
+	} else if (modeString == "DFS") {
+		
+	} else if (modeString == "IDDFS") {
+
+	} else if (modeString == "A*" || modeString == "ASTAR") {
+		
+	} else {
+		std::cerr << "Invalid mode argument: \"" << modeString << "\", exiting..." << std::endl;
 	}
+
+	//Write solution to file
+	std::ofstream outFileStream(outputFile);
 	for (state s : solution) {
 		outFileStream << s << std::endl << std::endl;
 	}

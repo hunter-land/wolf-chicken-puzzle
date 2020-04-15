@@ -3,9 +3,11 @@
 #include <vector>
 
 std::vector<state> BFS(state initialState, state goalState) {
-	std::vector<stateNode*> previousStates = {};
-	std::vector<stateNode> allNodes = {{initialState, nullptr}};
-	std::vector<stateNode*> fronteir = {&allNodes[0]};
+	stateNode* initialNode = new stateNode; //Creating a stateNode element from initial state
+	initialNode->thisState = initialState;
+	initialNode->prevNode = nullptr;
+	std::vector<stateNode*> allNodes = {initialNode}; //All nodes in our graph
+	std::vector<stateNode*> fronteir = {initialNode}; //All frontier nodes in the graph
 
 	stateNode* goalNode = nullptr;
 
@@ -13,7 +15,9 @@ std::vector<state> BFS(state initialState, state goalState) {
 		stateNode* thisNode = fronteir[0];
 		fronteir.erase(fronteir.begin());
 
+		//Check if this is the state we are aiming for
 		if(thisNode->thisState == goalState) {
+			//This is the goal, set it and move on to the next step
 			goalNode = thisNode;
 			break;
 		}
@@ -22,16 +26,21 @@ std::vector<state> BFS(state initialState, state goalState) {
 		//Exclude already visited states
 		for(int i = 0; i < possibleNextStates.size(); i++) {
 			bool alreadyIncluded = false;
+			//Check for state in node list
 			for(int j = 0; j < allNodes.size(); j++) {
-				if(allNodes[j].thisState == possibleNextStates[i]) {
+				if(allNodes[j]->thisState == possibleNextStates[i]) {
+					//State is in another node, adding it would be redundant/a step backwards
 					alreadyIncluded = true;
 					break;
 				}
 			}
+			//Do not add redundant/backstepping states, but add all others
 			if(!alreadyIncluded) {
-				//std::cout << "Adding state" << std::endl << possibleNextStates[i] << std::endl;
-				allNodes.push_back({possibleNextStates[i], thisNode});
-				fronteir.push_back(&allNodes[allNodes.size()-1]);
+				stateNode* newNode = new stateNode;
+				newNode->thisState = possibleNextStates[i];
+				newNode->prevNode = thisNode;
+				allNodes.push_back(newNode);
+				fronteir.push_back(newNode);
 			}
 		}
 	}
@@ -39,13 +48,22 @@ std::vector<state> BFS(state initialState, state goalState) {
 	//We have path, build it back into vector
 	std::vector<state> resultingPath;
 	if(goalNode != nullptr) {
+		//Add every state
 		for(stateNode* currentState = goalNode; currentState->prevNode != nullptr; currentState = currentState->prevNode) {
 			resultingPath.insert(resultingPath.begin(), currentState->thisState);
 			//std::cout << currentState << std::endl;
 		}
+		//Don't forget the initialState
 		resultingPath.insert(resultingPath.begin(), initialState);
 	} else {
-		std::cout << "No solution from state:" << std::endl << initialState << std::endl;
+		//std::cout << "No solution from state:" << std::endl << initialState << std::endl;
 	}
+
+	//Now lets clean up memory we used
+	for (stateNode* sn : allNodes) {
+		delete sn;
+	}
+
+	//Finally, send back the path we found
 	return resultingPath;
 }
