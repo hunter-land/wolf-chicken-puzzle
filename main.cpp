@@ -18,6 +18,7 @@
 #include "./state.hpp"
 #include "./stateGenerator.cpp"
 #include "./BFS.cpp"
+#include "./aStar.cpp"
 
 int main(int argc, char *argv[]) {
 	
@@ -53,14 +54,15 @@ int main(int argc, char *argv[]) {
 	} else if (modeString == "IDDFS") {
 
 	} else if (modeString == "A*" || modeString == "ASTAR") {
-		
+		solution = aStar(initState, goalState);
 	} else {
 		std::cerr << "Invalid mode argument: \"" << modeString << "\", exiting..." << std::endl;
 	}
 
-	//Write solution to file
+	//Write solution to file and console
 	std::ofstream outFileStream(outputFile);
 	for (state s : solution) {
+		std::cout << s << std::endl << std::endl;
 		outFileStream << s << std::endl << std::endl;
 	}
 

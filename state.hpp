@@ -18,11 +18,12 @@ struct state{
 			 + std::abs(boatIsOnLeft - g.boatIsOnLeft);
 	}
 };
-//A struct to add a back pointer
+//A struct to add a back pointer and a 'numberOfPreviousStates' value
 //Used for state navigation
 struct stateNode {
 	state thisState;
-	stateNode* prevNode;
+	stateNode* prevNode = nullptr;
+	int previousStateCount = 0;
 };
 
 //State comparitor
