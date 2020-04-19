@@ -19,9 +19,15 @@
 #include "./stateGenerator.cpp"
 #include "./BFS.cpp"
 #include "./aStar.cpp"
+#include "./DFS.cpp"
+#include "./IDDFS.cpp"
+
+#define MAX 25
 
 int main(int argc, char *argv[]) {
 	
+	answer solution;
+
 	if(argc != 5) {
 		std::cerr << "This program requires 4 arguments:" << std::endl;
 		std::cerr << "\t<Initial State File>" << std::endl;
@@ -46,13 +52,15 @@ int main(int argc, char *argv[]) {
 	goalFileStream >> goalState;
 
 	//Setup to solve the problem
-	std::vector<state> solution;
+	//std::vector<state> solution;
+
+	
 	if(modeString == "BFS") {
 		solution = BFS(initState, goalState);
 	} else if (modeString == "DFS") {
-		
+		solution = DFS(initState, goalState);
 	} else if (modeString == "IDDFS") {
-
+		solution = IDDFS(initState, goalState, MAX);
 	} else if (modeString == "A*" || modeString == "ASTAR") {
 		solution = aStar(initState, goalState);
 	} else {
@@ -61,10 +69,11 @@ int main(int argc, char *argv[]) {
 
 	//Write solution to file and console
 	std::ofstream outFileStream(outputFile);
-	for (state s : solution) {
+	for (state s : solution.path) {
 		std::cout << s << std::endl << std::endl;
 		outFileStream << s << std::endl << std::endl;
 	}
+	std::cout << "Number of nodes expanded: " << solution.count << std::endl;
 
 	return 0;
 }
