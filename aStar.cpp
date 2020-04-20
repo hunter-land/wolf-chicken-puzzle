@@ -19,6 +19,8 @@ answer aStar(state initialState, state goalState) {
 
 	while(frontier.size() > 0 && goalNode == nullptr) {
 		stateNode* nodeToExpand = bestNodeOption(frontier, goalState);
+		std::cout << "Best heuristic: " << nodeToExpand->previousStateCount + nodeToExpand->thisState.getHeuristic(goalState) << std::endl;
+		std::cout << frontier.size() << ", " << counter << std::endl;
 		frontier.erase(std::find(frontier.begin(), frontier.end(), nodeToExpand));
 
 		if(nodeToExpand->thisState == goalState) {
@@ -29,12 +31,21 @@ answer aStar(state initialState, state goalState) {
 		counter++;
 		std::vector<state> nextStates = generateNextStates(nodeToExpand->thisState);
 		for(state s : nextStates) {
-			stateNode* nextNode = new stateNode;
-			nextNode->previousStateCount = nodeToExpand->previousStateCount + 1;
-			nextNode->prevNode = nodeToExpand;
-			nextNode->thisState = s;
-			allNodes.push_back(nextNode);
-			frontier.push_back(nextNode);
+			bool newState = true;
+			for(int i = 0; i < allNodes.size(); i++) { //Remove duplicates
+				if(allNodes[i]->thisState == s) {
+					newState = false;
+					break;
+				}
+			}
+			if(newState) {
+				stateNode* nextNode = new stateNode;
+				nextNode->previousStateCount = nodeToExpand->previousStateCount + 1;
+				nextNode->prevNode = nodeToExpand;
+				nextNode->thisState = s;
+				allNodes.push_back(nextNode);
+				frontier.push_back(nextNode);
+			}
 		}
 	}
 
