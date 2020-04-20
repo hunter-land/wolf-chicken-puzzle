@@ -41,23 +41,23 @@ bool operator==(const state a, const state b) {
 
 //For printing a state
 std::ostream& operator<<(std::ostream& outs, const state s) {
-	outs << s.wolvesOnLeft << "," << s.chickensOnLeft << "," << s.boatIsOnLeft << std::endl
-		 << s.wolvesOnRight << "," << s.chickensOnRight << "," << !s.boatIsOnLeft;
+	outs << s.chickensOnLeft << "," << s.wolvesOnLeft << "," << s.boatIsOnLeft << std::endl
+		 << s.chickensOnRight << "," << s.wolvesOnRight << "," << !s.boatIsOnLeft;
 }
 //For reading a state
 std::istream& operator>>(std::istream& ins, state& s) {
 	std::string valStr;
 	
 	std::getline(ins, valStr, ',');
-	s.wolvesOnLeft = std::stoi(valStr);
-	std::getline(ins, valStr, ',');
 	s.chickensOnLeft = std::stoi(valStr);
+	std::getline(ins, valStr, ',');
+	s.wolvesOnLeft = std::stoi(valStr);
 	std::getline(ins, valStr); //No ',' argument because the end here is noted by '\n' instead
 	s.boatIsOnLeft = std::stoi(valStr);
 	std::getline(ins, valStr, ',');
-	s.wolvesOnRight = std::stoi(valStr);
-	std::getline(ins, valStr, ',');
 	s.chickensOnRight = std::stoi(valStr);
+	std::getline(ins, valStr, ',');
+	s.wolvesOnRight = std::stoi(valStr);
 	std::getline(ins, valStr);
 	//s.wolvesOnLeft = std::stoi(valStr); //This value is known from the boat value above
 
