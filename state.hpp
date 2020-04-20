@@ -26,6 +26,12 @@ struct stateNode {
 	int previousStateCount = 0;
 };
 
+//a struct to return both the count of nodes expanded, and the full path to the solution
+struct answer {
+	std::vector<state> path;
+	int count;
+};
+
 //State comparitor
 bool operator==(const state a, const state b) {
 	return	a.wolvesOnLeft == b.wolvesOnLeft && a.wolvesOnRight == b.wolvesOnRight &&

@@ -5,7 +5,9 @@
 
 stateNode* bestNodeOption(std::vector<stateNode*> options, state goal);
 
-std::vector<state> aStar(state initialState, state goalState) {
+answer aStar(state initialState, state goalState) {
+	int counter = 0;
+	answer solution;
 	stateNode* initialNode = new stateNode;
 	initialNode->thisState = initialState;
 	initialNode->prevNode = nullptr;
@@ -21,9 +23,10 @@ std::vector<state> aStar(state initialState, state goalState) {
 
 		if(nodeToExpand->thisState == goalState) {
 			goalNode = nodeToExpand;
+			solution.count = counter;
 			break;
 		}
-
+		counter++;
 		std::vector<state> nextStates = generateNextStates(nodeToExpand->thisState);
 		for(state s : nextStates) {
 			stateNode* nextNode = new stateNode;
@@ -55,7 +58,8 @@ std::vector<state> aStar(state initialState, state goalState) {
 	}
 
 	//Finally, send back the path we found
-	return resultingPath;
+	solution.path = resultingPath;
+	return solution;
 }
 
 stateNode* bestNodeOption(std::vector<stateNode*> options, state goal) {
