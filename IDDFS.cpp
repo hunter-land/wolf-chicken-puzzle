@@ -76,7 +76,8 @@ answer DLS(state initialState, state goalState, int limit) {
 		delete sn;
 	}
 
-	//Finally, send back the path we found
+	//Finally, send back the path we found, and the number of nodes expanded
+	solution.count = counter;
 	solution.path = resultingPath;
 	return solution;
 }
@@ -84,14 +85,16 @@ answer DLS(state initialState, state goalState, int limit) {
 
 answer IDDFS(state initialState, state goalState, int MAX)
 {
-	answer solution;
+	answer solution, subSolution;
 	std::vector<state> foundPath;
 	for (int i = 0; i <= MAX; i++)
 	{
 		//cout << "limit: " << i << endl;
-		solution = DLS(initialState, goalState, i);
-		if (solution.path.size() > 0)
+		subSolution = DLS(initialState, goalState, i);
+		solution.count += subSolution.count; //Nodes expanded over ALL iterations
+		if (subSolution.path.size() > 0)
 		{
+			solution.path = subSolution.path;
 			break;
 		}
 	}

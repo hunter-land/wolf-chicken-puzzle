@@ -1,5 +1,5 @@
 The program can be compiled with the command:
-g++ ./main.cpp -o ./main
+g++ -std=c++11 ./main.cpp -o ./main
 
 The program is then ran as:
 ./main <initState> <goalState> <mode> <outputFile>

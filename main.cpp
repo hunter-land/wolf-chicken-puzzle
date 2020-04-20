@@ -22,7 +22,7 @@
 #include "./DFS.cpp"
 #include "./IDDFS.cpp"
 
-#define MAX 900
+#define MAX __INT_MAX__
 
 int main(int argc, char *argv[]) {
 	
