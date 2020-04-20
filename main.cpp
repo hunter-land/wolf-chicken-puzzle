@@ -22,7 +22,7 @@
 #include "./DFS.cpp"
 #include "./IDDFS.cpp"
 
-#define MAX 25
+#define MAX 900
 
 int main(int argc, char *argv[]) {
 	
@@ -69,11 +69,16 @@ int main(int argc, char *argv[]) {
 
 	//Write solution to file and console
 	std::ofstream outFileStream(outputFile);
-	for (state s : solution.path) {
-		std::cout << s << std::endl << std::endl;
-		outFileStream << s << std::endl << std::endl;
+	if(solution.path.size() > 0) {
+		for (state s : solution.path) {
+			std::cout << s << std::endl << std::endl;
+			outFileStream << s << std::endl << std::endl;
+		}
+		std::cout << "Number of nodes expanded: " << solution.count << std::endl;
+		outFileStream << "Number of nodes expanded: " << solution.count << std::endl;
+	} else {
+		std::cout << "No solution found." << std::endl;
+		outFileStream << "No solution found." << std::endl;
 	}
-	std::cout << "Number of nodes expanded: " << solution.count << std::endl;
-
 	return 0;
 }
